@@ -77,7 +77,11 @@ def os_type():
 
 def validate_response(resp):
     if resp.status_code == 404:
-        raise ValueError("There is no such driver by url {}".format(resp.url))
+        raise ValueError(
+            f"There is no such driver by url {resp.url}\n"
+            f"Response text:\n{resp.text}\n"
+            f"Response headers:\n{dict(resp.headers)}\n"
+        )
     elif resp.status_code != 200:
         raise ValueError(resp.json())
 
