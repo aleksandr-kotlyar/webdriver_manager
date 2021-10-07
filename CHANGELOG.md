@@ -1,7 +1,13 @@
 # Changelog
 
+### 3.5.0 (to be released... )
+- Downloading `IEDriverServer` from GitHub
+- Supporting python 3.9, 3.10 (tbh it always has been)
+- Tested `webdriver_manager` on python 3.7, 3.8, 3.9, 3.10 macOS/Linux
 
-### 3.4.3
+---
+
+### 3.4.3 (to be released on October 2021)
 - Fix: WinError6 while executing script, packed in .exe by pyinstaller
 - Fix: stdio problem when making exe using pyinstaller with noconsole flag
 - Fix: error with execution right on linux afer extraction from zip
