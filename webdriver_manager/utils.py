@@ -86,12 +86,6 @@ def validate_response(resp):
         raise ValueError(resp.json())
 
 
-def write_file(content, path):
-    with open(path, "wb") as code:
-        code.write(content)
-    return path
-
-
 def download_file(url: str) -> File:
     log(f"Trying to download new driver from {url}")
     response = requests.get(url, stream=True)
@@ -104,20 +98,6 @@ def get_date_diff(date1, date2, date_format):
     b = datetime.datetime.strptime(str(date2.strftime(date_format)), date_format)
 
     return (b - a).days
-
-
-def get_filename_from_response(response, name):
-    try:
-        filename = re.findall("filename=(.+)", response.headers["content-disposition"])[0]
-    except KeyError:
-        filename = "{}.zip".format(name)
-    except IndexError:
-        filename = name + ".exe"
-
-    if '"' in filename:
-        filename = filename.replace('"', "")
-
-    return filename
 
 
 def linux_browser_apps_to_cmd(*apps: str) -> str:
