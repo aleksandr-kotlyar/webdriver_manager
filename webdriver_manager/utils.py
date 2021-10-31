@@ -140,8 +140,8 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
     """
     ignore_errors_cmd_part = ' 2>$null' if os.getenv('WDM_LOG_LEVEL') == '0' else ''
     return (
-        f"$ErrorActionPreference='silentlycontinue' ; "
-        + f'{apps[0]}{ignore_errors_cmd_part} ;'
+        f"powershell $ErrorActionPreference='silentlycontinue'; "
+        + f'{apps[0]}{ignore_errors_cmd_part};'
         + ''.join(f' if (-not $?) {{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
     )
 
@@ -159,9 +159,9 @@ def get_browser_version_from_os(browser_type=None):
             OSType.LINUX: linux_browser_apps_to_cmd('google-chrome', 'google-chrome-stable', 'google-chrome-beta', 'google-chrome-dev'),
             OSType.MAC: r'/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version',
             OSType.WIN: windows_browser_apps_to_cmd(
-                r'powershell (Get-Item -Path "%PROGRAMFILES%\Google\Chrome\Application\chrome.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES(x86)%\Google\Chrome\Application\chrome.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES%\Google\Chrome\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES(x86)%\Google\Chrome\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Google\Chrome\BLBeacon" /v version',
                 r'reg query "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Google Chrome" /v version'
             ),
@@ -170,9 +170,9 @@ def get_browser_version_from_os(browser_type=None):
             OSType.LINUX: linux_browser_apps_to_cmd('chromium', 'chromium-browser'),
             OSType.MAC: r'/Applications/Chromium.app/Contents/MacOS/Chromium --version',
             OSType.WIN: windows_browser_apps_to_cmd(
-                r'powershell (Get-Item -Path "%PROGRAMFILES%\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES(x86)%\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%LOCALAPPDATA%\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES%\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES(x86)%\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%LOCALAPPDATA%\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Chromium\BLBeacon" /v version',
                 r'reg query "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Chromium" /v version'
             ),
@@ -182,22 +182,22 @@ def get_browser_version_from_os(browser_type=None):
             OSType.MAC: r'/Applications/Microsoft\ Edge.app/Contents/MacOS/Microsoft\ Edge --version',
             OSType.WIN: windows_browser_apps_to_cmd(
                 # stable edge
-                r'powershell (Get-Item -Path "%PROGRAMFILES%\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES(x86)%\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES%\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES(x86)%\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge\BLBeacon" /v version',
                 r'reg query "HKLM\SOFTWARE\Microsoft\EdgeUpdate\Clients\{56EB18F8-8008-4CBD-B6D2-8C97FE7E9062}" /v pv',
                 # beta edge
-                r'powershell (Get-Item -Path "%LOCALAPPDATA%\Microsoft\Edge Beta\Application\msedge.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES%\Microsoft\Edge Beta\Application\msedge.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES(x86)%\Microsoft\Edge Beta\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%LOCALAPPDATA%\Microsoft\Edge Beta\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES%\Microsoft\Edge Beta\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES(x86)%\Microsoft\Edge Beta\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge Beta\BLBeacon" /v version',
                 # dev edge
-                r'powershell (Get-Item -Path "%LOCALAPPDATA%\Microsoft\Edge Dev\Application\msedge.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES%\Microsoft\Edge Dev\Application\msedge.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES(x86)%\Microsoft\Edge Dev\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%LOCALAPPDATA%\Microsoft\Edge Dev\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES%\Microsoft\Edge Dev\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES(x86)%\Microsoft\Edge Dev\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge Dev\BLBeacon" /v version',
                 # canary edge
-                r'powershell (Get-Item -Path "%LOCALAPPDATA%\Microsoft\Edge SxS\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%LOCALAPPDATA%\Microsoft\Edge SxS\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge SxS\BLBeacon" /v version',
                 # highest edge
                 r"Powershell (Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion"
@@ -207,9 +207,9 @@ def get_browser_version_from_os(browser_type=None):
             OSType.LINUX: linux_browser_apps_to_cmd('firefox'),
             OSType.MAC: r'/Applications/Firefox.app/Contents/MacOS/firefox --version',
             OSType.WIN: windows_browser_apps_to_cmd(
-                r'powershell (Get-Item -Path "%PROGRAMFILES%\Mozilla Firefox\firefox.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "%PROGRAMFILES(x86)%\Mozilla Firefox\firefox.exe").VersionInfo.FileVersion',
-                r"Powershell (Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe').'(Default)').VersionInfo.ProductVersion",
+                r'(Get-Item -Path "%PROGRAMFILES%\Mozilla Firefox\firefox.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "%PROGRAMFILES(x86)%\Mozilla Firefox\firefox.exe").VersionInfo.FileVersion',
+                r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe').'(Default)').VersionInfo.ProductVersion",
                 r'reg query "HKLM\SOFTWARE\Mozilla\Mozilla Firefox" /v CurrentVersion'
             ),
         },
