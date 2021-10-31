@@ -184,6 +184,7 @@ def get_browser_version_from_os(browser_type=None):
                 # stable edge
                 r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 r'(Get-Item -Path "$env:PROGRAMFILES(x86)\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge\BLBeacon" /v version',
                 r'reg query "HKLM\SOFTWARE\Microsoft\EdgeUpdate\Clients\{56EB18F8-8008-4CBD-B6D2-8C97FE7E9062}" /v pv',
                 # beta edge
