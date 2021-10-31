@@ -141,8 +141,8 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
     ignore_errors_cmd_part = ' 2>$null' if os.getenv('WDM_LOG_LEVEL') == '0' else ''
     return (
         f"powershell $ErrorActionPreference='silentlycontinue'; "
-        + f'{apps[0]}{ignore_errors_cmd_part};'
-        + ''.join(f' if (-not $?) {{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
+        + f'{apps[0]}{ignore_errors_cmd_part}; if (-not $?) '
+        + ' elif (-not $?) '.join(f'{{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
     )
 
 
