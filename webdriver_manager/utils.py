@@ -140,7 +140,7 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
     """
     ignore_errors_cmd_part = ' 2>$null' if os.getenv('WDM_LOG_LEVEL') == '0' else ''
     return (
-        f"$ErrorActionPreference='silentlycontinue'; "
+        f"powershell $ErrorActionPreference='silentlycontinue'; "
         + f'{apps[0]}{ignore_errors_cmd_part};'
         + ''.join(f' if (-not $?) {{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
     )
@@ -200,7 +200,7 @@ def get_browser_version_from_os(browser_type=None):
                 r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge SxS\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge SxS\BLBeacon" /v version',
                 # highest edge
-                r"Powershell (Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion"
+                r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion"
             ),
         },
         'firefox': {
