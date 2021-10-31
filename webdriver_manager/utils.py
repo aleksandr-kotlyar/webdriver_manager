@@ -138,11 +138,11 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
     Result command example:
        cmd1; if (-not $?) { cmd2 }
     """
-    ignore_errors_cmd_part = ' 2>$null' if os.getenv('WDM_LOG_LEVEL') == '0' else ''
+    ignore_errors_cmd_part = ' 2>$null'
     return (
         f"powershell $ErrorActionPreference='silentlycontinue'; "
-        + f'{apps[0]}{ignore_errors_cmd_part}; if (-not $?) '
-        + ' elif (-not $?) '.join(f'{{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
+        + f'{apps[0]}{ignore_errors_cmd_part};'
+        + ''.join(f' if (-not $?) {{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
     )
 
 
@@ -182,7 +182,7 @@ def get_browser_version_from_os(browser_type=None):
             OSType.MAC: r'/Applications/Microsoft\ Edge.app/Contents/MacOS/Microsoft\ Edge --version',
             OSType.WIN: windows_browser_apps_to_cmd(
                 # stable edge
-                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge\Application\msedge.exe").VersionInfo.ProductVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 r'(Get-Item -Path "$env:PROGRAMFILES(x86)\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 # highest edge
