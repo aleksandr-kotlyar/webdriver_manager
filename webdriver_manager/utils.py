@@ -201,7 +201,7 @@ def get_browser_version_from_os(browser_type=None):
                 r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge SxS\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge SxS\BLBeacon" /v version',
                 # highest edge
-                r'(Get-Item (Get-ItemProperty "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe")."(Default)").VersionInfo.ProductVersion'
+                r'(Get-Item (Get-ItemProperty "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe")."(Default)").VersionInfo.ProductVersion'
             ),
         },
         'firefox': {
@@ -210,7 +210,7 @@ def get_browser_version_from_os(browser_type=None):
             OSType.WIN: windows_browser_apps_to_cmd(
                 r'(Get-Item -Path "$env:PROGRAMFILES\Mozilla Firefox\firefox.exe").VersionInfo.FileVersion',
                 r'(Get-Item -Path "$env:PROGRAMFILES(x86)\Mozilla Firefox\firefox.exe").VersionInfo.FileVersion',
-                r'(Get-Item (Get-ItemProperty "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe")."(Default)").VersionInfo.ProductVersion',
+                r'(Get-Item (Get-ItemProperty "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe")."(Default)").VersionInfo.ProductVersion',
                 r'reg query "HKLM\SOFTWARE\Mozilla\Mozilla Firefox" /v CurrentVersion'
             ),
         },
