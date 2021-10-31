@@ -182,7 +182,7 @@ def get_browser_version_from_os(browser_type=None):
             OSType.MAC: r'/Applications/Microsoft\ Edge.app/Contents/MacOS/Microsoft\ Edge --version',
             OSType.WIN: windows_browser_apps_to_cmd(
                 # stable edge
-                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES\Microsoft\Edge\Application\msedge.exe").VersionInfo.ProductVersion',
                 r'(Get-Item -Path "$env:PROGRAMFILES(x86)\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge\Application\msedge.exe").VersionInfo.FileVersion',
                 # highest edge
