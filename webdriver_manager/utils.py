@@ -143,8 +143,8 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
     powershell = determine_powershell()
     return (
         f" {powershell} $ErrorActionPreference='silentlycontinue' ; "
-        + f' {powershell} {apps[0]}{ignore_errors_cmd_part} ;'
-        + ''.join(f' if (-not $?) {{ {powershell} {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
+        + f'{apps[0]}{ignore_errors_cmd_part} ;'
+        + ''.join(f' if (-not $?) {{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
     )
 
 
