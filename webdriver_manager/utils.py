@@ -172,8 +172,8 @@ def get_browser_version_from_os(browser_type=None):
             OSType.LINUX: linux_browser_apps_to_cmd('chromium', 'chromium-browser'),
             OSType.MAC: r'/Applications/Chromium.app/Contents/MacOS/Chromium --version',
             OSType.WIN: windows_browser_apps_to_cmd(
-                r'powershell (Get-Item -Path "$env:PROGRAMFILES\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
-                r'powershell (Get-Item -Path "$env:PROGRAMFILES(x86)\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
+                r'(Get-Item -Path "$env:PROGRAMFILES(x86)\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
                 r'(Get-Item -Path "$env:LOCALAPPDATA\Chromium\Application\chrome.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Chromium\BLBeacon" /v version',
                 r'reg query "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Chromium" /v version'
