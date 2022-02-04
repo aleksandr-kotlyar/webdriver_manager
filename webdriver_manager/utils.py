@@ -1,5 +1,4 @@
 import datetime
-import logging
 import os
 import platform
 import re
@@ -202,7 +201,8 @@ def get_browser_version_from_os(browser_type=None):
                 r'(Get-Item -Path "$env:LOCALAPPDATA\Microsoft\Edge SxS\Application\msedge.exe").VersionInfo.FileVersion',
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge SxS\BLBeacon" /v version',
                 # highest edge
-                r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion"
+                r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion",
+                r"[System.Diagnostics.FileVersionInfo]::GetVersionInfo((Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').ProductVersion"
             ),
         },
         'firefox': {
@@ -257,5 +257,4 @@ def determine_powershell():
             shell=True,
     ) as stream:
         stdout = stream.communicate()[0].decode()
-        log(f'stdout {stdout}')
     return '' if stdout == 'PowerShell' else 'powershell'
