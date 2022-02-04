@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import platform
 import re
@@ -256,4 +257,5 @@ def determine_powershell():
             shell=True,
     ) as stream:
         stdout = stream.communicate()[0].decode()
+        logging.info(stdout)
     return '' if stdout == 'PowerShell' else 'powershell'
