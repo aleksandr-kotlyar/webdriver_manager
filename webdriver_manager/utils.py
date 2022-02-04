@@ -139,11 +139,11 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
        cmd1; if (-not $?) { cmd2 }
     """
     ignore_errors_cmd_part = ' 2>$null' if os.getenv('WDM_LOG_LEVEL') == '0' else ''
-
+    powershell = determine_powershell()
     return (
         f"$ErrorActionPreference='silentlycontinue' ; "
-        + f'{determine_powershell} {apps[0]}{ignore_errors_cmd_part} ;'
-        + ''.join(f' if (-not $?) {{{determine_powershell} {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
+        + f'{powershell} {apps[0]}{ignore_errors_cmd_part} ;'
+        + ''.join(f' if (-not $?) {{{powershell} {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
     )
 
 
