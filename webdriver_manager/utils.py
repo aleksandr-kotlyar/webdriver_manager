@@ -257,5 +257,5 @@ def determine_powershell():
             shell=True,
     ) as stream:
         stdout = stream.communicate()[0].decode()
-        logging.info(stdout)
+        log(f'stdout {stdout}')
     return '' if stdout == 'PowerShell' else 'powershell'
