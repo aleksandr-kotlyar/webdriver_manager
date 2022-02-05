@@ -36,9 +36,7 @@ def test_edge_manager_with_wrong_version():
             version="0.2",
             os_type='win64',
         ).install()
-        driver = webdriver.Edge(executable_path=driver_path)
-        driver.quit()
-
+        webdriver.Edge(executable_path=driver_path)
     assert (
                "There is no such driver by url "
                "https://msedgedriver.azureedge.net/0.2/edgedriver_win64.zip"
