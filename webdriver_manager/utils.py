@@ -203,7 +203,7 @@ def get_browser_version_from_os(browser_type=None):
                 # highest edge
                 r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion",
                 r"[System.Diagnostics.FileVersionInfo]::GetVersionInfo((Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').ProductVersion",
-                r'Get-AppxPackage -Name *MicrosoftEdge.* | Foreach Version'
+                r'Get-AppxPackage -Name *MicrosoftEdge.* | Foreach Version',
                 r'reg query "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" /v version'
             ),
         },
