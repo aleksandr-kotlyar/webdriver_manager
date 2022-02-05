@@ -141,9 +141,9 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
     ignore_errors_cmd_part = ' 2>$null' if os.getenv('WDM_LOG_LEVEL') == '0' else ''
     powershell = determine_powershell()
     return (
-        f" {powershell} $ErrorActionPreference='silentlycontinue' ; "
+        f" {powershell} \"$ErrorActionPreference='silentlycontinue' ; "
         + f'{apps[0]}{ignore_errors_cmd_part} ;'
-        + ''.join(f' if (-not $?) {{ {i}{ignore_errors_cmd_part} }}' for i in apps[1:])
+        + ''.join(f" if (-not $?) {{ {i}{ignore_errors_cmd_part} }}\"" for i in apps[1:])
     )
 
 
@@ -203,7 +203,7 @@ def get_browser_version_from_os(browser_type=None):
                 # highest edge
                 r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion",
                 r"[System.Diagnostics.FileVersionInfo]::GetVersionInfo((Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').ProductVersion",
-                r'"Get-AppxPackage -Name *MicrosoftEdge.* | Foreach Version"'
+                r'Get-AppxPackage -Name *MicrosoftEdge.* | Foreach Version'
             ),
         },
         'firefox': {
