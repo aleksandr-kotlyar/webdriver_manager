@@ -202,7 +202,8 @@ def get_browser_version_from_os(browser_type=None):
                 r'reg query "HKCU\SOFTWARE\Microsoft\Edge SxS\BLBeacon" /v version',
                 # highest edge
                 r"(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').VersionInfo.ProductVersion",
-                r"[System.Diagnostics.FileVersionInfo]::GetVersionInfo((Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').ProductVersion"
+                r"[System.Diagnostics.FileVersionInfo]::GetVersionInfo((Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe').'(Default)').ProductVersion",
+                r'"Get-AppxPackage -Name *MicrosoftEdge.* | Foreach Version"'
             ),
         },
         'firefox': {
