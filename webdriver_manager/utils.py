@@ -136,7 +136,7 @@ def windows_browser_apps_to_cmd(*apps: str) -> str:
     From browser paths and registry keys.
 
     Result command example:
-       cmd1; if (-not $?) { cmd2 }
+       cmd1; if (-not $? -or $? -match $error) { cmd2 }
     """
     ignore_errors_cmd_part = ' 2>$null' if os.getenv('WDM_LOG_LEVEL') == '0' else ''
     powershell = determine_powershell()
@@ -247,11 +247,8 @@ def read_version_from_cmd(cmd, pattern):
 
 
 def determine_powershell():
-    """If running process in CMD wdm needs to add "powershell" to commands.
-
-    Returns: '' if console is PowerShell and 'powershell' if CMD.
-    """
-    cmd = '(dir 2>&1 *`|echo CMD);&<# rem #>echo PowerShell'
+    """Returns "powershell" if process runs in CMD console."""
+    cmd = '(dir 2>&1 *`|echo CMD);&<# rem #>echo powershell'
     with subprocess.Popen(
             cmd,
             stdout=subprocess.PIPE,
@@ -260,4 +257,4 @@ def determine_powershell():
             shell=True,
     ) as stream:
         stdout = stream.communicate()[0].decode()
-    return '' if stdout == 'PowerShell' else 'powershell'
+    return '' if stdout == 'powershell' else 'powershell'
