@@ -30,6 +30,8 @@ class DriverCache(object):
         binary_path = os.path.join(path, binary)
         self.__save_metadata(browser_version, driver_name, os_type, driver_version, binary_path)
         log(f"Driver has been saved in cache [{path}]")
+        sys.path.append(path)
+        log(sys.path)
         return binary_path
 
     def __get_binary(self, files, driver_name):
