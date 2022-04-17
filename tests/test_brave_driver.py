@@ -4,7 +4,6 @@ import pytest
 from selenium import webdriver
 
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.logger import log
 from webdriver_manager.utils import ChromeType, os_name, OSType
 
 
@@ -34,7 +33,7 @@ def test_brave_manager_with_selenium():
         OSType.MAC: "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
         OSType.WIN: f"{os.getenv('LOCALAPPDATA')}\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
     }[os_name()]
-    log(binary_location)
+
     option = webdriver.ChromeOptions()
     option.binary_location = binary_location
     driver_path = ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()

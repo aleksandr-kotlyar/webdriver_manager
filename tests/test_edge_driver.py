@@ -4,7 +4,6 @@ import re
 import pytest
 from selenium import webdriver
 
-from webdriver_manager.driver import EdgeChromiumDriver
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.utils import PATTERN, ChromeType
 
@@ -50,6 +49,8 @@ def test_edge_with_specific_version(os_type, specific_version):
         os_type=os_type,
     ).install()
     assert os.path.exists(bin_path)
+    assert os_type in bin_path
+    assert specific_version in bin_path
 
 
 @pytest.mark.parametrize('os_type', ['win32', 'win64', 'mac64', 'linux64'])

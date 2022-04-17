@@ -209,40 +209,32 @@ import os
 os.environ['WDM_LOG'] = '0'
 ```
 
-### `WDM_LOG_LEVEL`
-To silent `webdriver_manager` logs and remove them from console, initialize env variable `WDM_LOG_LEVEL` with `'0'` value before your selenium tests:
+#### `WDM_LOG_LEVEL`
+You can customize the logging level of webdriver manager by using the env variable `WDM_LOG_LEVEL` before running your selenium tests.
+
+The values are set using logging setLevel method, you can find more info [here](https://docs.python.org/3/library/logging.html).
+
+At the moment the values are as follows:
+
+| Level    | Numeric value |
+|----------|---------------|
+| CRITICAL | 50            |
+| ERROR    | 40            |
+| WARNING  | 30            |
+| INFO     | 20            |
+| DEBUG    | 10            |
+| NOTSET   | 0             |
 
 ```python
 import os
 
-os.environ['WDM_LOG_LEVEL'] = '0'
-``` 
-
-or via constructor:
-
-```python
-ChromeDriverManager("2.26", log_level=0).install()
-```
-
-### `WDM_PRINT_FIRST_LINE`
-By default webdriver manager prints a blank space before its log output if logging is enabled. If you want to disable this, initialize `WDM_PRINT_FIRST_LINE` with `'False'` before your tests:
-
-```python
-import os
-
-os.environ['WDM_PRINT_FIRST_LINE'] = 'False'
-``` 
-
-or via constructor:
-
-```python
-ChromeDriverManager("2.26", print_first_line=False).install()
+os.environ['WDM_LOG_LEVEL'] = '20'
 ```
 
 ### `WDM_LOCAL`
-By default all driver binaries are saved to user.home/.wdm folder. You can override this setting and save binaries to project.root/.wdm.
+By default, all driver binaries are saved to user.home/.wdm folder. You can override this setting and save binaries to project.root/.wdm.
 
-```
+```python
 import os
 
 os.environ['WDM_LOCAL'] = '1'
@@ -251,7 +243,7 @@ os.environ['WDM_LOCAL'] = '1'
 ### `WDM_SSL_VERIFY`
 SSL verification can be disabled for downloading webdriver binaries in case when you have troubles with SSL Certificates or SSL Certificate Chain. Just set the environment variable `WDM_SSL_VERIFY` to `"0"`.
 
-```
+```python
 import os
 
 os.environ['WDM_SSL_VERIFY'] = '0'

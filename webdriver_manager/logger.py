@@ -4,11 +4,8 @@ import os
 loggers = {}
 
 
-def _init_logger(level=logging.INFO, name="WDM", first_line=False, formatter='[%(name)s] - %(message)s'):
+def _init_logger(name="WDM", formatter='[%(name)s] - %(message)s', level=None):
     """Initialize the logger."""
-    log_level = os.getenv('WDM_LOG_LEVEL')
-    if log_level:
-        level = int(log_level)
     if not loggers.get(name):
         _logger = logging.getLogger(name)
 
@@ -18,10 +15,14 @@ def _init_logger(level=logging.INFO, name="WDM", first_line=False, formatter='[%
         _logger.addHandler(handler)
         _logger.setLevel(level)
         loggers[name] = _logger
+    else:
+        loggers.get(name).handlers[0].setFormatter(logging.Formatter(formatter))
 
 
-def log(text, level=logging.INFO, name="WDM", first_line=False, formatter='[%(name)s] - %(message)s'):
+def log(text, name="WDM", formatter='[%(name)s] - %(message)s'):
     """Emitting the log message."""
-    if os.getenv('WDM_LOG', None) != '0':
-        _init_logger(level, name, first_line, formatter)
-        loggers.get(name).info(text)
+    log_level = int(os.getenv('WDM_LOG_LEVEL', logging.INFO))
+
+    if os.getenv('WDM_LOG', '') != '0':
+        _init_logger(name, formatter, log_level)
+        loggers.get(name).log(log_level, text)
