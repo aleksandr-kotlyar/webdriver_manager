@@ -40,6 +40,8 @@ def save_file(file: File, directory: str):
     archive_path = f"{directory}{os.sep}{file.filename}"
     with open(archive_path, "wb") as code:
         code.write(file.content)
+    if not os.path.exists(archive_path):
+        raise FileExistsError(f"No file has been saved on such path {archive_path}")
     return Archive(archive_path, os_type=os_name())
 
 
@@ -222,14 +224,16 @@ def get_browser_version_from_os(browser_type=None):
         version = read_version_from_cmd(cmd_mapping, pattern)
         return version
     except Exception:
-        raise Exception(f"Can not find browser {browser_type} installed in your system!!!")
+        log(f"WARNING: Can not find browser {browser_type} installed in your system!!!")
+        return None
 
 
-def format_version(browser_type, version):
+def format_version(driver):
+    version = driver._version if driver._version else driver.get_browser_version()
     if not version or version == 'latest':
         return 'latest'
     try:
-        pattern = PATTERN[browser_type]
+        pattern = PATTERN[driver.get_browser_type()]
         result = re.search(pattern, version)
         return result.group(0) if result else version
     except:

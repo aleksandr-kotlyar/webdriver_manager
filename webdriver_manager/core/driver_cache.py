@@ -34,10 +34,7 @@ class DriverCache(object):
     def save_file_to_cache(self, driver, file: File):
         driver_name = driver.get_name()
         os_type = driver.get_os_type()
-        driver_version = driver.get_version()
-        browser_version = driver.get_browser_version()
-        browser_type = driver.get_browser_type()
-        unified_version = format_version(browser_type, driver_version)
+        unified_version = format_version(driver)
 
         path = os.path.join(
             self._drivers_directory, driver_name, os_type, unified_version
@@ -46,9 +43,7 @@ class DriverCache(object):
         files = archive.unpack(path)
         binary = self.__get_binary(files, driver_name)
         binary_path = os.path.join(path, binary)
-        self.__save_metadata(
-            browser_version, driver_name, os_type, unified_version, binary_path
-        )
+        self.__save_metadata(driver, binary_path)
         log(f"Driver has been saved in cache [{path}]")
         return binary_path
 
@@ -62,22 +57,12 @@ class DriverCache(object):
 
         raise Exception(f"Can't find binary for {driver_name} among {files}")
 
-    def __save_metadata(
-            self,
-            browser_version,
-            driver_name,
-            os_type,
-            driver_version,
-            binary_path,
-            date=None,
-    ):
+    def __save_metadata(self, driver, binary_path, date=None):
         if date is None:
             date = datetime.date.today()
 
         metadata = self.get_metadata()
-
-        key = f"{os_type}_{driver_name}_{driver_version}_for_{browser_version}"
-
+        key = self.form_metadata_key(driver)
         data = {
             key: {
                 "timestamp": date.strftime(self._date_format),
@@ -93,17 +78,15 @@ class DriverCache(object):
         """Find driver by '{os_type}_{driver_name}_{driver_version}_{browser_version}'."""
         os_type = driver.get_os_type()
         driver_name = driver.get_name()
-        driver_version = driver.get_version()
         browser_version = driver.get_browser_version()
-        browser_type = driver.get_browser_type()
-        unified_version = format_version(browser_type, driver_version)
+        unified_version = format_version(driver)
 
         metadata = self.get_metadata()
 
-        key = f"{os_type}_{driver_name}_{unified_version}_for_{browser_version}"
+        key = self.form_metadata_key(driver)
         if key not in metadata:
             log(
-                f"There is no [{os_type}] {driver_name} for browser {browser_version} in cache"
+                f"There is no [{os_type}] {driver_name} {unified_version} for browser {browser_version} in cache"
             )
             return None
 
@@ -134,3 +117,9 @@ class DriverCache(object):
             with open(self._drivers_json_path, "r") as outfile:
                 return json.load(outfile)
         return {}
+
+    def form_metadata_key(self, driver):
+        unified_version = format_version(driver)
+        browser_version = driver.get_browser_version()
+        key = f"{driver.get_os_type()}_{driver.get_name()}_{unified_version}_for_{browser_version}"
+        return key
