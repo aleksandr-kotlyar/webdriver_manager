@@ -154,9 +154,10 @@ jobs:
         uses: codecov/codecov-action@v5
         if: always()
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           name: ${{ matrix.os }}-py${{ matrix.python-version }}
           use_oidc: true
+          fail_ci_if_error: true
 
   test-future-python:
     continue-on-error: true
@@ -259,6 +260,7 @@ jobs:
         uses: codecov/codecov-action@v5
         if: always()
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           name: ${{ matrix.os }}-py${{ matrix.python-version }}
           use_oidc: true
+          fail_ci_if_error: true
